@@ -6,7 +6,11 @@ test:
 build-local:
 	go build -o ${LOCAL_BINARY_NAME} ./cmd/wordlestats/main.go
 
+build-frontend:
+	tsc ./frontend/app.ts --outfile ./public/scripts/app.js
+
 clean:
 	rm -f ${LOCAL_BINARY_NAME}
+	rm -f ./public/scripts/app.js
 
-.PHONY: test build-local clean
+.PHONY: test build-local build-frontend clean
