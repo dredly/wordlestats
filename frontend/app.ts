@@ -9,12 +9,7 @@ function handleSubmission(evt: SubmitEvent) {
         console.error("Could not find shareTextArea");
         return;
     }
-    console.log(document.querySelector("#sharetextarea"));
-    const shareText = document.querySelector("#sharetextarea")?.textContent;
-    if (!shareText) {
-        console.error("Could not find shareTextArea");
-        return;
-    }
+    const shareText = (shareTextArea as HTMLTextAreaElement).value;
     const { day, result } = parseShareText(shareText);
     saveResult(day, result);
     window.location.reload();
