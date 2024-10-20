@@ -1,9 +1,11 @@
 - [x] save submitted results to local storage
-- [ ] Initial styling setup + increase size of input textarea
+- [x] Correctly scale the input textarea
+- [x] Initial styling setup
 - [ ] turn frontend into typescript
 - [ ] Add about page
 - [ ] Display basic bar graph
 - [ ] Display current streak
 - [ ] Deploy
+- [ ] Actually style
 - [ ] Backup files
 - [ ] Leagues
