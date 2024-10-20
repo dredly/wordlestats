@@ -1,7 +1,7 @@
 - [x] save submitted results to local storage
 - [x] Correctly scale the input textarea
 - [x] Initial styling setup
-- [ ] turn frontend into typescript
+- [x] turn frontend into typescript
 - [ ] Add about page
 - [ ] Display basic bar graph
 - [ ] Display current streak
