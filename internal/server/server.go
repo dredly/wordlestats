@@ -17,6 +17,7 @@ func Run() error {
 func setupRoutes() http.Handler {
 	mux := http.NewServeMux()
 	home(mux)
+	about(mux)
 	static(mux)
 	return mux
 }
@@ -24,6 +25,12 @@ func setupRoutes() http.Handler {
 func home(mux *http.ServeMux) {
 	mux.Handle("GET /", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (gmp.Node, error) {
 		return html.Home(), nil
+	}))
+}
+
+func about(mux *http.ServeMux) {
+	mux.Handle("GET /about", ghttp.Adapt(func(w http.ResponseWriter, r *http.Request) (gmp.Node, error) {
+		return html.About(), nil
 	}))
 }
 

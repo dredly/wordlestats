@@ -2,10 +2,14 @@
 - [x] Correctly scale the input textarea
 - [x] Initial styling setup
 - [x] turn frontend into typescript
-- [ ] Add about page
+- [x] Add about page
 - [ ] Display basic bar graph
 - [ ] Display current streak
 - [ ] Deploy
-- [ ] Actually style
+- [ ] Syling/UI
+    - [ ] Colours
+    - [ ] Fonts
+    - [ ] Make it look good on mobile
+    - [ ] Navbar
 - [ ] Backup files
 - [ ] Leagues
