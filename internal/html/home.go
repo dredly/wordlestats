@@ -22,6 +22,7 @@ func Home() gmp.Node {
 		},
 		Body: []gmp.Node{
 			ghtml.H1(gmp.Text("Wordle Stats")),
+			ghtml.A(gmp.Text("About"), ghtml.Href("/about")),
 			ghtml.Main(
 				ghtml.Class("mainarea"),
 				ghtml.H3(gmp.Text("Paste your share text here")),
