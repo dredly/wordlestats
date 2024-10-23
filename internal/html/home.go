@@ -24,7 +24,8 @@ func Home() gmp.Node {
 			ghtml.H1(gmp.Text("Wordle Stats")),
 			ghtml.A(gmp.Text("About"), ghtml.Href("/about")),
 			ghtml.Main(
-				ghtml.Class("mainarea"),
+				ghtml.H3(gmp.Text("Guess Distribution")),
+				ghtml.Div(ghtml.Class("guessgraph")),
 				ghtml.H3(gmp.Text("Paste your share text here")),
 				ghtml.Form(
 					ghtml.ID("form"),

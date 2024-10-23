@@ -1,6 +1,26 @@
 const WORDLE_STATS_KEY = "wstats";
 
+populateGuessGraph();
 document.querySelector("#form")?.addEventListener("submit", evt => handleSubmission(evt as SubmitEvent));
+
+function populateGuessGraph() {
+    const currentStr = localStorage.getItem(WORDLE_STATS_KEY);
+    if (!currentStr) {
+        return;
+    }
+    const dayResults: object = JSON.parse(currentStr);
+    const results = Object.values(dayResults) as string[];
+    const resultQuantities = new Map<string, number>();
+    let maxQuantity = 0;
+    results.forEach(r => {
+        const currentQuantity = resultQuantities.get(r);
+        const newQuantity = currentQuantity ? currentQuantity + 1 : 1;
+        resultQuantities.set(r, newQuantity);
+        maxQuantity = Math.max(maxQuantity, newQuantity);
+    });
+    console.log("resultQuantities", resultQuantities);
+    console.log("maxQuantity", maxQuantity);
+}
 
 function handleSubmission(evt: SubmitEvent) {
     evt.preventDefault();
