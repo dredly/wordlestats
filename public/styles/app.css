@@ -3,3 +3,9 @@
     width: 600px;
     height: 600px;
 }
+
+.guessbar {
+    border: 2px solid rgb(22, 14, 2);
+    width: 600px;
+    height: 80px;
+}

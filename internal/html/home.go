@@ -12,6 +12,8 @@ import (
 // 1 header line + 1 blank line + up to 6 guesses
 const numColumns = 8
 
+var  guesses = []string{"1", "2", "3", "4", "5", "6", "X"}
+
 func Home() gmp.Node {
 	return components.HTML5(components.HTML5Props{
 		Title: "Wordle Stats",
@@ -25,7 +27,10 @@ func Home() gmp.Node {
 			ghtml.A(gmp.Text("About"), ghtml.Href("/about")),
 			ghtml.Main(
 				ghtml.H3(gmp.Text("Guess Distribution")),
-				ghtml.Div(ghtml.Class("guessgraph")),
+				ghtml.Div(
+					ghtml.Class("guessgraph"),
+					gmp.Map(guesses, guessDistributionBar),
+				),
 				ghtml.H3(gmp.Text("Paste your share text here")),
 				ghtml.Form(
 					ghtml.ID("form"),
@@ -39,4 +44,8 @@ func Home() gmp.Node {
 			),
 		},
 	})
+}
+
+func guessDistributionBar(guess string) gmp.Node {
+	return ghtml.Div(ghtml.ID("guessbar" + guess), ghtml.Class("guessbar"))
 }

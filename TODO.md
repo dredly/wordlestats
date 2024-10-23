@@ -4,6 +4,9 @@
 - [x] turn frontend into typescript
 - [x] Add about page
 - [ ] Display basic bar graph
+    - [x] Scale bars based on guess distribution
+    - [ ] Use percentage for width
+    - [ ] Label the bars
 - [ ] Display current streak
 - [ ] Deploy
 - [ ] Syling/UI
