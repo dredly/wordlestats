@@ -18,34 +18,16 @@ function populateGuessGraph() {
         resultQuantities.set(r, newQuantity);
         maxQuantity = Math.max(maxQuantity, newQuantity);
     });
-    const resultRelativeWidths = new Map<string, number>();
+    const resultPercentWidths = new Map<string, number>();
     resultQuantities.forEach((quantity, res) => {
-        resultRelativeWidths.set(res, quantity / maxQuantity);
+        resultPercentWidths.set(res, (quantity / maxQuantity) * 100);
     })
-    const guessGraphElem = document.querySelector(".guessgraph");
-    if (!guessGraphElem) {
-        console.error("could not find guess graph elem");
-        return;
-    }
-    const elemWidth = guessGraphElem.clientWidth;
-    const resultWidths = {
-        "1": getResultWidth("1/6", elemWidth, resultRelativeWidths),
-        "2": getResultWidth("2/6", elemWidth, resultRelativeWidths),
-        "3": getResultWidth("3/6", elemWidth, resultRelativeWidths),
-        "4": getResultWidth("4/6", elemWidth, resultRelativeWidths),
-        "5": getResultWidth("5/6", elemWidth, resultRelativeWidths),
-        "6": getResultWidth("6/6", elemWidth, resultRelativeWidths),
-        "X": getResultWidth("X/6", elemWidth, resultRelativeWidths),
-    }
-    console.log("resultWidths", resultWidths);
-
-    Object.keys(resultWidths).forEach(k => {
-        const barElem = document.querySelector("#guessbar" + k);
+    resultPercentWidths.forEach((percentage, res) => {
+        const barElem = document.querySelector("#guessbar" + res.split("/")[0])
         if (!barElem) {
             throw new Error("Could not find bar element");
         }
-        const width = resultWidths[k as NumGuesses];
-        barElem.setAttribute("style", `width: ${width}px;`)
+        barElem.setAttribute("style", `width: ${percentage}%;`);
     })
 }
 
@@ -92,5 +74,3 @@ type DayResult = {
     day: number,
     result: string
 }
-
-type NumGuesses = "1" | "2" | "3" | "4" | "5" | "6" | "X"

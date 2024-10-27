@@ -5,7 +5,7 @@
 - [x] Add about page
 - [ ] Display basic bar graph
     - [x] Scale bars based on guess distribution
-    - [ ] Use percentage for width
+    - [x] Use percentage for width
     - [ ] Label the bars
 - [ ] Display current streak
 - [ ] Deploy
