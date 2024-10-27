@@ -1,11 +1,27 @@
+.guessdistribution {
+    display: flex;
+    flex-direction: row;
+}
+
+.guesslabels {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+}
+
+.guesslabel {
+    height: 80px;
+    text-align: center;
+}
+
 .guessgraph {
-    border: 2px solid rgb(22, 14, 2);
+    background-color: coral;
     width: 600px;
-    height: 600px;
+    height: 560px;
 }
 
 .guessbar {
-    border: 2px solid rgb(22, 14, 2);
+    background-color: grey;
     width: 0%;
     height: 80px;
 }

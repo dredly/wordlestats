@@ -28,8 +28,15 @@ func Home() gmp.Node {
 			ghtml.Main(
 				ghtml.H3(gmp.Text("Guess Distribution")),
 				ghtml.Div(
-					ghtml.Class("guessgraph"),
-					gmp.Map(guesses, guessDistributionBar),
+					ghtml.Class("guessdistribution"),
+					ghtml.Div(
+						ghtml.Class("guesslabels"),
+						gmp.Map(guesses, guessLabel),
+					),
+					ghtml.Div(
+						ghtml.Class("guessgraph"),
+						gmp.Map(guesses, guessDistributionBar),
+					),
 				),
 				ghtml.H3(gmp.Text("Paste your share text here")),
 				ghtml.Form(
@@ -48,4 +55,13 @@ func Home() gmp.Node {
 
 func guessDistributionBar(guess string) gmp.Node {
 	return ghtml.Div(ghtml.ID("guessbar" + guess), ghtml.Class("guessbar"))
+}
+
+func guessLabel(guess string) gmp.Node {
+	return ghtml.Div(
+		ghtml.Class("guesslabel"),
+		ghtml.P(
+			gmp.Text(guess),
+		),
+	)
 }

@@ -7,6 +7,8 @@
     - [x] Scale bars based on guess distribution
     - [x] Use percentage for width
     - [ ] Label the bars
+        - [x] Labels on the left
+        - [ ] Labels inside the bars
 - [ ] Display current streak
 - [ ] Deploy
 - [ ] Syling/UI
