@@ -12,6 +12,8 @@ import (
 // 1 header line + 1 blank line + up to 6 guesses
 const numColumns = 8
 
+var  guesses = []string{"1", "2", "3", "4", "5", "6", "X"}
+
 func Home() gmp.Node {
 	return components.HTML5(components.HTML5Props{
 		Title: "Wordle Stats",
@@ -24,7 +26,18 @@ func Home() gmp.Node {
 			ghtml.H1(gmp.Text("Wordle Stats")),
 			ghtml.A(gmp.Text("About"), ghtml.Href("/about")),
 			ghtml.Main(
-				ghtml.Class("mainarea"),
+				ghtml.H3(gmp.Text("Guess Distribution")),
+				ghtml.Div(
+					ghtml.Class("guessdistribution"),
+					ghtml.Div(
+						ghtml.Class("guesslabels"),
+						gmp.Map(guesses, guessLabel),
+					),
+					ghtml.Div(
+						ghtml.Class("guessgraph"),
+						gmp.Map(guesses, guessDistributionBar),
+					),
+				),
 				ghtml.H3(gmp.Text("Paste your share text here")),
 				ghtml.Form(
 					ghtml.ID("form"),
@@ -38,4 +51,36 @@ func Home() gmp.Node {
 			),
 		},
 	})
+}
+
+func guessDistributionBar(guess string) gmp.Node {
+	return ghtml.Div(
+		ghtml.Class("guessbar"),
+		baseGuessDistributionBar(guess),
+		scalableGuessDistributionBar(guess),
+	)
+}
+
+func baseGuessDistributionBar(guess string) gmp.Node {
+	return ghtml.Div(
+		ghtml.Class("guessbarbase"), 
+		ghtml.P(ghtml.ID("guessbarbase" + guess), gmp.Text("0")),
+	)
+}
+
+func scalableGuessDistributionBar(guess string) gmp.Node {
+	return ghtml.Div(
+		ghtml.ID("guessbarscalable" + guess), 
+		ghtml.Class("guessbarscalable"),
+		ghtml.P(ghtml.ID("guessbarscalablelabel" + guess), gmp.Text("")),
+	)
+}
+
+func guessLabel(guess string) gmp.Node {
+	return ghtml.Div(
+		ghtml.Class("guesslabel"),
+		ghtml.P(
+			gmp.Text(guess),
+		),
+	)
 }

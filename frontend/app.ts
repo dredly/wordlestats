@@ -1,6 +1,47 @@
 const WORDLE_STATS_KEY = "wstats";
 
+populateGuessGraph();
 document.querySelector("#form")?.addEventListener("submit", evt => handleSubmission(evt as SubmitEvent));
+
+function populateGuessGraph() {
+    const currentStr = localStorage.getItem(WORDLE_STATS_KEY);
+    if (!currentStr) {
+        return;
+    }
+    const dayResults: object = JSON.parse(currentStr);
+    const results = Object.values(dayResults) as string[];
+    const resultQuantities = new Map<string, number>();
+    let maxQuantity = 0;
+    results.forEach(r => {
+        const currentQuantity = resultQuantities.get(r);
+        const newQuantity = currentQuantity ? currentQuantity + 1 : 1;
+        resultQuantities.set(r, newQuantity);
+        maxQuantity = Math.max(maxQuantity, newQuantity);
+    });
+    resultQuantities.forEach((quantity, res) => {
+        const percent = (quantity / maxQuantity) * 100;
+        const barElem = document.querySelector("#guessbarscalable" + res.split("/")[0]);
+        if (!barElem) {
+            throw new Error("Could not find bar element");
+        }
+        barElem.setAttribute("style", `width: ${percent}%;`);
+        const baseLabel = document.querySelector("#guessbarbase" + res.split("/")[0]);
+        if (!baseLabel) {
+            throw new Error("Could not find base label");
+        }
+        baseLabel.textContent = "";
+        const scalableLabel = document.querySelector("#guessbarscalablelabel" + res.split("/")[0]);
+        if (!scalableLabel) {
+            throw new Error("Could not find scalable label");
+        }
+        scalableLabel.textContent = String(quantity);
+    })
+}
+
+function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
+    const relWidth = resultRelativeWidths.get(result);
+    return relWidth ? relWidth * elemWidth : 0;
+}
 
 function handleSubmission(evt: SubmitEvent) {
     evt.preventDefault();

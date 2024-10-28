@@ -1,3 +1,45 @@
-.mainarea {
-    border: 2px solid rgb(22, 14, 2);
+.guessdistribution {
+    display: flex;
+    flex-direction: row;
+}
+
+.guesslabels {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+}
+
+.guesslabel {
+    height: 80px;
+    text-align: center;
+}
+
+.guessgraph {
+    background-color: coral;
+    width: 600px;
+    height: 560px;
+}
+
+.guessbar {
+    width: 600px;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+}
+
+.guessbarbase {
+    background-color: rgb(14, 14, 26);
+    color: antiquewhite;
+    height: 80px;
+    text-align: center;
+    width: 60px;
+}
+
+.guessbarscalable {
+    background-color: rgb(14, 14, 26);
+    color: antiquewhite;
+    width: 0%;
+    height: 80px;
+    text-align: end;
+    padding-inline-end: 20px;
 }
