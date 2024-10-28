@@ -3,14 +3,14 @@
 - [x] Initial styling setup
 - [x] turn frontend into typescript
 - [x] Add about page
-- [ ] Display basic bar graph
+- [x] Display basic bar graph
     - [x] Scale bars based on guess distribution
     - [x] Use percentage for width
-    - [ ] Label the bars
+    - [x] Label the bars
         - [x] Labels on the left
-        - [ ] Labels inside the bars
-- [ ] Display current streak
+        - [x] Labels inside the bars
 - [ ] Deploy
+- [ ] Display current streak
 - [ ] Syling/UI
     - [ ] Colours
     - [ ] Fonts

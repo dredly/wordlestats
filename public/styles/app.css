@@ -21,7 +21,25 @@
 }
 
 .guessbar {
-    background-color: grey;
+    width: 600px;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+}
+
+.guessbarbase {
+    background-color: rgb(14, 14, 26);
+    color: antiquewhite;
+    height: 80px;
+    text-align: center;
+    width: 60px;
+}
+
+.guessbarscalable {
+    background-color: rgb(14, 14, 26);
+    color: antiquewhite;
     width: 0%;
     height: 80px;
+    text-align: end;
+    padding-inline-end: 20px;
 }

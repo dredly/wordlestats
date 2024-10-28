@@ -18,16 +18,23 @@ function populateGuessGraph() {
         resultQuantities.set(r, newQuantity);
         maxQuantity = Math.max(maxQuantity, newQuantity);
     });
-    const resultPercentWidths = new Map<string, number>();
     resultQuantities.forEach((quantity, res) => {
-        resultPercentWidths.set(res, (quantity / maxQuantity) * 100);
-    })
-    resultPercentWidths.forEach((percentage, res) => {
-        const barElem = document.querySelector("#guessbar" + res.split("/")[0])
+        const percent = (quantity / maxQuantity) * 100;
+        const barElem = document.querySelector("#guessbarscalable" + res.split("/")[0]);
         if (!barElem) {
             throw new Error("Could not find bar element");
         }
-        barElem.setAttribute("style", `width: ${percentage}%;`);
+        barElem.setAttribute("style", `width: ${percent}%;`);
+        const baseLabel = document.querySelector("#guessbarbase" + res.split("/")[0]);
+        if (!baseLabel) {
+            throw new Error("Could not find base label");
+        }
+        baseLabel.textContent = "";
+        const scalableLabel = document.querySelector("#guessbarscalablelabel" + res.split("/")[0]);
+        if (!scalableLabel) {
+            throw new Error("Could not find scalable label");
+        }
+        scalableLabel.textContent = String(quantity);
     })
 }
 
