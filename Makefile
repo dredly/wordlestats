@@ -10,6 +10,9 @@ build-prod:
 build-local:
 	go build -o ${LOCAL_BINARY_NAME} ./cmd/wordlestats/main.go
 
+run-local:
+	./${LOCAL_BINARY_NAME} -dev
+
 build-frontend:
 	tsc ./frontend/app.ts --outfile ./public/scripts/app.js
 
@@ -18,4 +21,4 @@ clean:
 	rm -f ${PROD_BINARY_NAME}
 	rm -f ./public/scripts/app.js
 
-.PHONY: test build-prod build-local build-frontend clean
+.PHONY: test build-prod build-local run-local build-frontend clean

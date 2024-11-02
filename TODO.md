@@ -11,7 +11,7 @@
         - [x] Labels inside the bars
 - [ ] Deploy
     - [x] Get working with embedded static files
-    - [ ] PROD vs dev config
+    - [x] dev flag
     - [ ] Deploy
 - [ ] Display current streak
 - [ ] Syling/UI

@@ -11,21 +11,20 @@ import (
 	ghttp "maragu.dev/gomponents/http"
 )
 
-func Run() error {
+func Run(devMode bool) error {
+	if devMode {
+		slog.Info("Running in dev mode")
+	}
 	slog.Info("Starting server on port 8080")
-	return http.ListenAndServe(":8080", setupRoutes())
+	return http.ListenAndServe(":8080", setupRoutes(devMode))
 }
 
-func setupRoutes() http.Handler {
-	staticFS, err := fs.Sub(projectroot.EmbeddedFS, "public")
-	if err != nil {
-		panic(err)
-	}
-	httpFS := http.FS(staticFS)
+func setupRoutes(devMode bool) http.Handler {
+	staticFS := setupStaticFS(devMode)
 	mux := http.NewServeMux()
 	home(mux)
 	about(mux)
-	static(mux, httpFS)
+	static(mux, staticFS)
 	return mux
 }
 
@@ -43,4 +42,16 @@ func about(mux *http.ServeMux) {
 
 func static(mux *http.ServeMux, fs http.FileSystem) {
 	mux.Handle("GET /static/",  http.StripPrefix("/static/", http.FileServer(fs)))
+}
+
+func setupStaticFS(devMode bool) http.FileSystem {
+	if devMode {
+		return http.Dir("./public")
+	}
+	staticFS, err := fs.Sub(projectroot.EmbeddedFS, "public")
+	if err != nil {
+		// TODO: properly progagate the error
+		panic(err)
+	}
+	return http.FS(staticFS)
 }
