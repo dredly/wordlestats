@@ -9,7 +9,10 @@
     - [x] Label the bars
         - [x] Labels on the left
         - [x] Labels inside the bars
-- [ ] Deploy
+- [x] Deploy
+    - [x] Get working with embedded static files
+    - [x] dev flag
+    - [x] Deploy
 - [ ] Display current streak
 - [ ] Syling/UI
     - [ ] Colours
@@ -17,4 +20,8 @@
     - [ ] Make it look good on mobile
     - [ ] Navbar
 - [ ] Backup files
+- [ ] Proper deployment
+    - [ ] Add a user
+    - [ ] firewall
+    - [ ] Connect to domain name
 - [ ] Leagues
