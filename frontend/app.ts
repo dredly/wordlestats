@@ -1,15 +1,22 @@
 const WORDLE_STATS_KEY = "wstats";
+const LAUNCH_DATE = new Date(2021, 6, 19); // TODO: get the actual launch date
 
-populateGuessGraph();
+const results = getResults();
+if (results) {
+    populateGuessGraph(Object.values(results));
+    populateStats(results);
+}
 document.querySelector("#form")?.addEventListener("submit", evt => handleSubmission(evt as SubmitEvent));
 
-function populateGuessGraph() {
+function getResults(): object | undefined {
     const currentStr = localStorage.getItem(WORDLE_STATS_KEY);
     if (!currentStr) {
         return;
     }
-    const dayResults: object = JSON.parse(currentStr);
-    const results = Object.values(dayResults) as string[];
+    return JSON.parse(currentStr);
+}
+
+function populateGuessGraph(results: string[]) {
     const resultQuantities = new Map<string, number>();
     let maxQuantity = 0;
     results.forEach(r => {
@@ -38,11 +45,6 @@ function populateGuessGraph() {
     })
 }
 
-function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
-    const relWidth = resultRelativeWidths.get(result);
-    return relWidth ? relWidth * elemWidth : 0;
-}
-
 function handleSubmission(evt: SubmitEvent) {
     evt.preventDefault();
     const shareTextArea = document.querySelector("#sharetextarea");
@@ -54,6 +56,26 @@ function handleSubmission(evt: SubmitEvent) {
     const { day, result } = parseShareText(shareText);
     saveResult(day, result);
     window.location.reload();
+}
+
+function populateStats(results: object) {
+    const total = Object.keys(results).length;
+    const numWon = Object.values(results)
+        .filter(r => (r as string) !== "X/6")
+        .length;
+    console.log("Total", total);
+    console.log("Num Won", numWon);
+    const days = Object.entries(results)
+        .filter(entry => entry[1] !== "X/6")
+        .map(entry => Number(entry[0]))
+        .sort((a, b) => (a - b));
+    const max = maxStreak(days);
+    console.log("maxStreak", max);
+}
+
+function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
+    const relWidth = resultRelativeWidths.get(result);
+    return relWidth ? relWidth * elemWidth : 0;
 }
 
 function parseShareText(shareText: string): DayResult {
@@ -75,6 +97,22 @@ function saveResult(day: number, result: string) {
     const stats = JSON.parse(currentStr);
     stats[day] = result;
     localStorage.setItem(WORDLE_STATS_KEY, JSON.stringify(stats));
+}
+
+function maxStreak(daysSorted: number[]): number {
+    let max = 1;
+    let currentStreak = 1;
+    for (let i = 1; i < daysSorted.length; i++) {
+        const prev = daysSorted[i - 1];
+        const curr = daysSorted[i];
+        if (curr - prev === 1) {
+            currentStreak++;
+            max = Math.max(max, currentStreak);
+        } else {
+            currentStreak = 1;
+        }
+    }
+    return max;
 }
 
 type DayResult = {
