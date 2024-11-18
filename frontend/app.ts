@@ -1,5 +1,6 @@
 const WORDLE_STATS_KEY = "wstats";
-const LAUNCH_DATE = new Date(2021, 6, 19); // TODO: get the actual launch date
+const LAUNCH_DATE = new Date(2021, 5, 19);
+const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
 const results = getResults();
 if (results) {
@@ -60,17 +61,18 @@ function handleSubmission(evt: SubmitEvent) {
 
 function populateStats(results: object) {
     const total = Object.keys(results).length;
-    const numWon = Object.values(results)
-        .filter(r => (r as string) !== "X/6")
-        .length;
     console.log("Total", total);
-    console.log("Num Won", numWon);
-    const days = Object.entries(results)
+    const wonDays = Object.entries(results)
         .filter(entry => entry[1] !== "X/6")
         .map(entry => Number(entry[0]))
         .sort((a, b) => (a - b));
-    const max = maxStreak(days);
+    const numWon = wonDays.length;
+    console.log("Num Won", numWon);
+    const max = maxStreak(wonDays);
     console.log("maxStreak", max);
+    const latestWordleDay = daysBetween(LAUNCH_DATE, new Date());
+    const currStreak = currentStreak(wonDays, latestWordleDay);
+    console.log("currStreak", currStreak);
 }
 
 function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
@@ -99,12 +101,12 @@ function saveResult(day: number, result: string) {
     localStorage.setItem(WORDLE_STATS_KEY, JSON.stringify(stats));
 }
 
-function maxStreak(daysSorted: number[]): number {
+function maxStreak(daysWonSorted: number[]): number {
     let max = 1;
     let currentStreak = 1;
-    for (let i = 1; i < daysSorted.length; i++) {
-        const prev = daysSorted[i - 1];
-        const curr = daysSorted[i];
+    for (let i = 1; i < daysWonSorted.length; i++) {
+        const prev = daysWonSorted[i - 1];
+        const curr = daysWonSorted[i];
         if (curr - prev === 1) {
             currentStreak++;
             max = Math.max(max, currentStreak);
@@ -114,6 +116,38 @@ function maxStreak(daysSorted: number[]): number {
     }
     return max;
 }
+
+function currentStreak(daysWonSorted: number[], latestWordleDay: number): number {
+    console.log("daysWonSorted", daysWonSorted);
+    console.log("latestWordleDay", latestWordleDay);
+    if (!daysWonSorted.length) {
+        return 0;
+    }
+    if (![latestWordleDay, latestWordleDay -1].includes(daysWonSorted[daysWonSorted.length - 1])) {
+        return 0;
+    }
+    const daysReversed = daysWonSorted.reverse();
+    let streak = 1;
+    for (let i = 1; i < daysReversed.length; i++) {
+        const prev = daysReversed[i - 1];
+        const curr = daysReversed[i];
+        if (prev - curr === 1) {
+            streak++;
+        } else {
+            break;
+        }
+    }
+    return streak;
+}
+
+function daysBetween(start: Date, end: Date): number {
+    // A day in UTC always lasts 24 hours (unlike in other time formats)
+    const startUTC = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    const endUTC = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+  
+    // so it's safe to divide by 24 hours
+    return (startUTC - endUTC) / ONE_DAY_IN_MS;
+  }
 
 type DayResult = {
     day: number,

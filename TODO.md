@@ -14,7 +14,8 @@
     - [x] dev flag
     - [x] Deploy
 - [ ] Display current streak + other stats
-    - [ ] Num played
+    - [x] Calculate stats
+    - [ ] Display stats
 - [ ] Syling/UI
     - [ ] Colours
     - [ ] Fonts
