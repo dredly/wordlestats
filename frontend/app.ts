@@ -5,7 +5,7 @@ const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
 const results = getResults();
 if (results) {
     populateGuessGraph(Object.values(results));
-    populateStats(results);
+    populateStats(calculateStats(results));
 }
 document.querySelector("#form")?.addEventListener("submit", evt => handleSubmission(evt as SubmitEvent));
 
@@ -46,6 +46,13 @@ function populateGuessGraph(results: string[]) {
     })
 }
 
+function populateStats(stats: number[]) {
+    const statValueElems = document.querySelectorAll(".statvalue");
+    statValueElems.forEach((elem, idx) => {
+        elem.textContent = String(stats[idx]);
+    })
+}
+
 function handleSubmission(evt: SubmitEvent) {
     evt.preventDefault();
     const shareTextArea = document.querySelector("#sharetextarea");
@@ -59,20 +66,19 @@ function handleSubmission(evt: SubmitEvent) {
     window.location.reload();
 }
 
-function populateStats(results: object) {
+// returns stats in the following order: Played, Win %, Current Streak, Max Streak 
+function calculateStats(results: object): number[] {
     const total = Object.keys(results).length;
-    console.log("Total", total);
     const wonDays = Object.entries(results)
         .filter(entry => entry[1] !== "X/6")
         .map(entry => Number(entry[0]))
         .sort((a, b) => (a - b));
     const numWon = wonDays.length;
-    console.log("Num Won", numWon);
+    const winPercent = Math.round((numWon / total) * 100);
     const max = maxStreak(wonDays);
-    console.log("maxStreak", max);
     const latestWordleDay = daysBetween(LAUNCH_DATE, new Date());
     const currStreak = currentStreak(wonDays, latestWordleDay);
-    console.log("currStreak", currStreak);
+    return [total, winPercent, currStreak, max];
 }
 
 function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {

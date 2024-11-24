@@ -13,9 +13,9 @@
     - [x] Get working with embedded static files
     - [x] dev flag
     - [x] Deploy
-- [ ] Display current streak + other stats
+- [x] Display current streak + other stats
     - [x] Calculate stats
-    - [ ] Display stats
+    - [x] Display stats
 - [ ] Syling/UI
     - [ ] Colours
     - [ ] Fonts
@@ -27,8 +27,3 @@
     - [ ] firewall
     - [ ] Connect to domain name
 - [ ] Leagues
-
-Wordle 1,246 2/6
-
-⬛🟨🟨🟨⬛
-🟩🟩🟩🟩🟩

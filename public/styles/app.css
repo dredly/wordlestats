@@ -43,3 +43,12 @@
     text-align: end;
     padding-inline-end: 20px;
 }
+
+#statistics {
+    display: flex;
+    flex-direction: row;
+}
+
+.statistic {
+    width: 100px;
+}
