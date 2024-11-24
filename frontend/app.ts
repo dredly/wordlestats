@@ -1,15 +1,23 @@
 const WORDLE_STATS_KEY = "wstats";
+const LAUNCH_DATE = new Date(2021, 5, 19);
+const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-populateGuessGraph();
+const results = getResults();
+if (results) {
+    populateGuessGraph(Object.values(results));
+    populateStats(calculateStats(results));
+}
 document.querySelector("#form")?.addEventListener("submit", evt => handleSubmission(evt as SubmitEvent));
 
-function populateGuessGraph() {
+function getResults(): object | undefined {
     const currentStr = localStorage.getItem(WORDLE_STATS_KEY);
     if (!currentStr) {
         return;
     }
-    const dayResults: object = JSON.parse(currentStr);
-    const results = Object.values(dayResults) as string[];
+    return JSON.parse(currentStr);
+}
+
+function populateGuessGraph(results: string[]) {
     const resultQuantities = new Map<string, number>();
     let maxQuantity = 0;
     results.forEach(r => {
@@ -38,9 +46,11 @@ function populateGuessGraph() {
     })
 }
 
-function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
-    const relWidth = resultRelativeWidths.get(result);
-    return relWidth ? relWidth * elemWidth : 0;
+function populateStats(stats: number[]) {
+    const statValueElems = document.querySelectorAll(".statvalue");
+    statValueElems.forEach((elem, idx) => {
+        elem.textContent = String(stats[idx]);
+    })
 }
 
 function handleSubmission(evt: SubmitEvent) {
@@ -54,6 +64,26 @@ function handleSubmission(evt: SubmitEvent) {
     const { day, result } = parseShareText(shareText);
     saveResult(day, result);
     window.location.reload();
+}
+
+// returns stats in the following order: Played, Win %, Current Streak, Max Streak 
+function calculateStats(results: object): number[] {
+    const total = Object.keys(results).length;
+    const wonDays = Object.entries(results)
+        .filter(entry => entry[1] !== "X/6")
+        .map(entry => Number(entry[0]))
+        .sort((a, b) => (a - b));
+    const numWon = wonDays.length;
+    const winPercent = Math.round((numWon / total) * 100);
+    const max = maxStreak(wonDays);
+    const latestWordleDay = daysBetween(LAUNCH_DATE, new Date());
+    const currStreak = currentStreak(wonDays, latestWordleDay);
+    return [total, winPercent, currStreak, max];
+}
+
+function getResultWidth(result: string, elemWidth: number, resultRelativeWidths: Map<string, number>): number {
+    const relWidth = resultRelativeWidths.get(result);
+    return relWidth ? relWidth * elemWidth : 0;
 }
 
 function parseShareText(shareText: string): DayResult {
@@ -76,6 +106,54 @@ function saveResult(day: number, result: string) {
     stats[day] = result;
     localStorage.setItem(WORDLE_STATS_KEY, JSON.stringify(stats));
 }
+
+function maxStreak(daysWonSorted: number[]): number {
+    let max = 1;
+    let currentStreak = 1;
+    for (let i = 1; i < daysWonSorted.length; i++) {
+        const prev = daysWonSorted[i - 1];
+        const curr = daysWonSorted[i];
+        if (curr - prev === 1) {
+            currentStreak++;
+            max = Math.max(max, currentStreak);
+        } else {
+            currentStreak = 1;
+        }
+    }
+    return max;
+}
+
+function currentStreak(daysWonSorted: number[], latestWordleDay: number): number {
+    console.log("daysWonSorted", daysWonSorted);
+    console.log("latestWordleDay", latestWordleDay);
+    if (!daysWonSorted.length) {
+        return 0;
+    }
+    if (![latestWordleDay, latestWordleDay -1].includes(daysWonSorted[daysWonSorted.length - 1])) {
+        return 0;
+    }
+    const daysReversed = daysWonSorted.reverse();
+    let streak = 1;
+    for (let i = 1; i < daysReversed.length; i++) {
+        const prev = daysReversed[i - 1];
+        const curr = daysReversed[i];
+        if (prev - curr === 1) {
+            streak++;
+        } else {
+            break;
+        }
+    }
+    return streak;
+}
+
+function daysBetween(start: Date, end: Date): number {
+    // A day in UTC always lasts 24 hours (unlike in other time formats)
+    const startUTC = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    const endUTC = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+  
+    // so it's safe to divide by 24 hours
+    return (startUTC - endUTC) / ONE_DAY_IN_MS;
+  }
 
 type DayResult = {
     day: number,

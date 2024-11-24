@@ -13,6 +13,12 @@ import (
 const numColumns = 8
 
 var  guesses = []string{"1", "2", "3", "4", "5", "6", "X"}
+var statisticLabels = []string{
+	"Played",
+	"Win %",
+	"Current Streak",
+	"Max Streak",
+}
 
 func Home() gmp.Node {
 	return components.HTML5(components.HTML5Props{
@@ -26,6 +32,11 @@ func Home() gmp.Node {
 			ghtml.H1(gmp.Text("Wordle Stats")),
 			ghtml.A(gmp.Text("About"), ghtml.Href("/about")),
 			ghtml.Main(
+				ghtml.H3(gmp.Text("Statistics")),
+				ghtml.Div(
+					ghtml.ID("statistics"),
+					gmp.Map(statisticLabels, statistic),
+				),
 				ghtml.H3(gmp.Text("Guess Distribution")),
 				ghtml.Div(
 					ghtml.Class("guessdistribution"),
@@ -51,6 +62,14 @@ func Home() gmp.Node {
 			),
 		},
 	})
+}
+
+func statistic(text string) gmp.Node {
+	return ghtml.Div(
+		ghtml.Class("statistic"),
+		ghtml.H2(ghtml.Class("statvalue"), gmp.Text("")),
+		ghtml.P(gmp.Text(text)),
+	)
 }
 
 func guessDistributionBar(guess string) gmp.Node {

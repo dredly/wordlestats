@@ -13,7 +13,9 @@
     - [x] Get working with embedded static files
     - [x] dev flag
     - [x] Deploy
-- [ ] Display current streak
+- [x] Display current streak + other stats
+    - [x] Calculate stats
+    - [x] Display stats
 - [ ] Syling/UI
     - [ ] Colours
     - [ ] Fonts
